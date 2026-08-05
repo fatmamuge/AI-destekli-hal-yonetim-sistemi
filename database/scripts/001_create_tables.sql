@@ -16,7 +16,7 @@ CREATE TABLE users (
 
 CREATE TABLE producer(
 	id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	user_id INTEGER NOT NULL,
+	user_id INTEGER NOT NULL UNIQUE,
 	address VARCHAR(125) NOT NULL,
 
 	FOREIGN KEY (user_id) REFERENCES users(id)
@@ -24,16 +24,16 @@ CREATE TABLE producer(
 
 CREATE TABLE commission_agent(
         id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-        user_id INTEGER NOT NULL,
+        user_id INTEGER NOT NULL UNIQUE,
         company_name  VARCHAR(50) NOT NULL,
-	tax_number INTEGER NOT NULL,
+	tax_number VARCHAR(20) NOT NULL,
 
         FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE trader (
 	id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	user_id INTEGER NOT NULL,
+	user_id INTEGER NOT NULL UNIQUE,
 	company_name  VARCHAR(50) NOT NULL,
 	tax_number VARCHAR(20) NOT NULL,
 
@@ -69,7 +69,7 @@ CREATE TABLE product_delivery (
 	quantity NUMERIC(10,2) NOT NULL,
      	unit_price NUMERIC(10,2) NOT NULL,
 	delivery_date DATE NOT NULL,
-	created_at TIMESTAMP NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	delivery_status_id INTEGER NOT NULL,
 
 	FOREIGN KEY (producer_id) REFERENCES producer(id),
@@ -117,7 +117,7 @@ CREATE TABLE payment (
 	sale_id INTEGER NOT NULL,
 	amount_received NUMERIC(10,2) NOT NULL,
 	payment_date DATE NOT NULL,
-	created_at TIMESTAMP NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	payment_status_id INTEGER NOT NULL,
 
 	FOREIGN KEY (sale_id) REFERENCES sale(id),
