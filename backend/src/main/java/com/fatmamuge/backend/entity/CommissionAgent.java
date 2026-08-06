@@ -4,14 +4,14 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "commission_agent")
-public class CommissionAgent 
+public class CommissionAgent{ 
 
 	@Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer id;
 	
-	@Column(name = "campany_name", nullable = false, length = 50)
-        private String campanyName;
+	@Column(name = "company_name", nullable = false, length = 50)
+        private String companyName;
 
 	@Column(name = "tax_number", nullable = false, length = 20)
         private String taxNumber;
