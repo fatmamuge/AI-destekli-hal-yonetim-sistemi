@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.fatmamuge.backend.dto.LoginRequest;
 import com.fatmamuge.backend.entity.User;
+import com.fatmamuge.backend.dto.LoginResponse;
+import com.fatmamuge.backend.security.JwtService;
 
 
 @Service
@@ -12,15 +14,18 @@ public class LoginService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public LoginService(UserRepository userRepository,
-                    PasswordEncoder passwordEncoder) {
+                    PasswordEncoder passwordEncoder,
+		    JwtService jwtService) {
 
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
+    this.jwtService = jwtService;
     }
 
-    public User login(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) {
 
         User user = userRepository
                 .findByPhoneNumber(request.getPhoneNumber())
@@ -33,7 +38,8 @@ public class LoginService {
         throw new RuntimeException("Invalid password");
     }
 
-        return user;
+        String token = jwtService.generateToken(user);
+	return new LoginResponse(token);
     }
 
 }
