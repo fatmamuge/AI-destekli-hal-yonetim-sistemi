@@ -3,6 +3,7 @@ package com.fatmamuge.backend.service;
 import com.fatmamuge.backend.entity.User;
 import com.fatmamuge.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -10,18 +11,29 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+
+    public UserService(UserRepository userRepository,
+                   PasswordEncoder passwordEncoder) {
+
+    this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
+}
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
-
+   
     public User saveUser(User user) {
-        return userRepository.save(user);
-    }
+
+    user.setPasswordHash(
+            passwordEncoder.encode(user.getPasswordHash())
+    );
+
+    return userRepository.save(user);
+}
+
     public void deleteUser(Integer id) {
         userRepository.deleteById(id);
     }
