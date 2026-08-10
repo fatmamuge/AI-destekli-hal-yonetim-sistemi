@@ -23,7 +23,7 @@ public class Producer {
 		this.id = id;
 	}
 
-	public String getAddess() {
+	public String getAddress() {
 		return address;
 	}
 	public void setAddress(String address) {
