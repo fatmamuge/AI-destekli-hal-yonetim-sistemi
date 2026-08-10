@@ -37,15 +37,22 @@ public class UserService {
     public void deleteUser(Integer id) {
         userRepository.deleteById(id);
     }
+
+
     public User updateUser(Integer id, User updatedUser) {
+
     User user = userRepository.findById(id).orElseThrow();
 
-        user.setNameSurname(updatedUser.getNameSurname());
-        user.setPhoneNumber(updatedUser.getPhoneNumber());
-        user.setPasswordHash(updatedUser.getPasswordHash());
-        user.setCreatedAt(updatedUser.getCreatedAt());
-        user.setRole(updatedUser.getRole());
+    user.setNameSurname(updatedUser.getNameSurname());
+    user.setPhoneNumber(updatedUser.getPhoneNumber());
 
-        return userRepository.save(user);
+    user.setPasswordHash(
+            passwordEncoder.encode(updatedUser.getPasswordHash())
+    );
+
+    user.setCreatedAt(updatedUser.getCreatedAt());
+    user.setRole(updatedUser.getRole());
+
+    return userRepository.save(user);
     }
 }

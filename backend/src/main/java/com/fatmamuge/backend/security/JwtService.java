@@ -19,6 +19,7 @@ public class JwtService {
     public String generateToken(User user) {
 	  return Jwts.builder()
             .subject(user.getPhoneNumber()) //bunu ilerde .subject(user.getId()... yapariz
+	    .claim("role", user.getRole().getName())
             .issuedAt(new Date())
             .expiration(new Date(System.currentTimeMillis() + 86400000)) //token in gecerlilik suresi yani 24 saat.
             .signWith(secretKey)
@@ -32,6 +33,15 @@ public class JwtService {
             .parseSignedClaims(token)
             .getPayload()
             .getSubject();
+    }
+    public String extractRole(String token) {
+
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("role", String.class);
     }
     public boolean isTokenValid(String token) {
 	    try {
