@@ -29,10 +29,17 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('GENERAL_MANAGER')")
+    @PostMapping("/users")
+    public User createUser(@RequestBody User user) {
+        return userService.saveUser(user);
+    }
+
+    @PreAuthorize("hasRole('GENERAL_MANAGER')")
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
     }
+    @PreAuthorize("hasRole('GENERAL_MANAGER')")
     @PutMapping("/users/{id}")
     public User updateUser(@PathVariable Integer id,
                            @RequestBody User updatedUser) {
