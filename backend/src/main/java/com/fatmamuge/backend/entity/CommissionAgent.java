@@ -20,7 +20,7 @@ public class CommissionAgent{
 	@JoinColumn(name = "user_id", nullable = false)
         private User user;
 
-	public Integer getID() {
+	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
